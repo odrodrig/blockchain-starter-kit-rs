@@ -100,6 +100,8 @@ function deploy_composer_contract {
             fi
             composer card import -f adminCard.card -c ${BUSINESS_NETWORK_CARD}
         fi
+        composer card list
+        ls
         composer network ping -c ${BUSINESS_NETWORK_CARD}
     done
     popd
