@@ -1,0 +1,26 @@
+/**
+ * Events emited during transactions
+ */
+ 
+namespace com.lowes.network.events
+// import com.lowes.network.*
+
+// /****************************
+// * Define Events (not implemented for this mvp)
+// *****************************/
+
+// Emitted when delivery completed
+event DeliveryCreated {
+  o String purchaseOrder
+}
+
+// Emitted when delivery updated
+event DeliveryUpdated {
+  o String purchaseOrder
+}
+
+// Emitted when delivery completed
+event DeliveryCompleted {
+  o String purchaseOrder
+}
+

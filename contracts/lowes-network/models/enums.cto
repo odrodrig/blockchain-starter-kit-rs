@@ -1,0 +1,9 @@
+/**
+ * Enum types for the network statuses
+ */
+
+namespace com.lowes.network.enums
+
+/****************************
+* Define enumerated types
+*****************************/

@@ -1,0 +1,14 @@
+/*
+* Queries for Marsh ISN MVP
+*/
+
+/********************************************
+* UI Queries
+* These quieries are used in the ui to select groups of assets
+********************************************/
+
+query getDeliveryOrders {
+  description: "Get all DeliveryOrder Assets"
+  statement:
+      SELECT com.lowes.network.DeliveryOrder
+}

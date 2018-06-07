@@ -1,0 +1,53 @@
+/**
+ * Access control rules for Lowes Metrolina
+ * Firms can only READ, WRITE, and UPDATE their own Assets
+ */
+
+rule LowesManagerPrivledges {
+    description: "LowesManager can see and edit own assets"
+    participant(m): "com.lowes.network.LowesManager"
+    operation: ALL
+    resource(v): "com.lowes.network.*"
+    condition: (v.lowesManager.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule LowesAdminPrivledges {
+    description: "LowesManager can see and edit own assets"
+    participant: "com.lowes.network.LowesAdmin"
+    operation: ALL
+    resource: "com.lowes.network.*"
+    action: ALLOW
+}
+
+rule MetrolinaAdminPrivledges {
+    description: "LowesManager can see and edit own assets"
+    participant: "com.lowes.network.Metrolina"
+    operation: ALL
+    resource: "com.lowes.network.*"
+    action: ALLOW
+}
+
+rule AdminPrivledges {
+    description: "Allow admin access to all resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "com.lowes.network.*"
+    action: ALLOW
+}
+
+rule AdminAllPrivledges {
+    description: "Allow admin all access to all underlying resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "com.lowes.network.**"
+    action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "ANY"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}

@@ -1,0 +1,142 @@
+/**
+ * Lowes-Metrolina supply chain network
+ */
+
+namespace com.lowes.network
+
+// Import enumerated types and events
+//import com.lowes.network.events.*
+//import com.lowes.network.enums.*
+
+/****************************
+* Define Participants
+*****************************/
+
+// All participants extended from basic firm
+abstract participant Firm identified by firmId {
+  o String firmId
+}
+
+participant LowesAdmin extends Firm {}
+
+participant LowesManager extends Firm {
+  o String location
+}
+
+participant Metrolina extends Firm {}
+
+concept Weather {
+  o Integer high
+  o Integer low
+  o String narrative
+  o Integer precip_chance
+  o String precip_type
+}
+
+/****************************
+* Define Asset(s)
+*****************************/
+
+// Delivery order between Lowes and Metrolina
+asset DeliveryOrder identified by purchaseOrder {
+
+  // Fields entered by Metrolina on creation
+  o String purchaseOrder
+  o DateTime createdTime // Must automatically generate
+  o String[] plantStringArray
+  o Integer[] plantQuantityArray
+  o Integer[] plantVarianceArray optional
+  o String truckId
+  o String startLocation
+  o String destinationLocation
+  o DateTime estimatedArrivalDay optional
+  o String estimatedArrivalTime optional
+  o DateTime departureTime optional
+  o String distanceToDeliver optional
+  o String durationInTraffic optional
+  o Weather weather optional
+
+  // Fields entered by Lowes after delievery
+  o Integer numEmployeesUnloading optional
+  o Integer numEmployeesShelving optional
+  o Integer numRacksRecieved optional
+  o DateTime arrivalTime optional
+  o DateTime unloadingStartTime optional
+  o DateTime unloadingEndTime optional
+
+  // Show if order is complete
+  o Boolean isCompleted default=false
+  o Boolean isVariance default=false
+
+  // Relevant Patiticpants to PolicyEvidence
+  --> LowesAdmin lowesAdmin
+  --> LowesManager lowesManager
+  --> Metrolina metrolina
+}
+
+/****************************
+* Define Transactions
+*****************************/
+
+// Metrolina creates order with the following flields
+transaction createDeliveryOrder {
+  // Fields for Metrolina to enter
+  o String purchaseOrder
+  o String[] plantStringArray
+  o Integer[] plantQuantityArray
+  o String truckId
+  o String startLocation
+  o String destinationLocation
+  o DateTime estimatedArrivalDay optional
+  o String estimatedArrivalTime optional
+  o DateTime departureTime optional
+  o String distanceToDeliver optional
+  o String durationInTraffic optional
+  o Weather weather optional
+
+  // Related Entities
+  --> LowesAdmin lowesAdmin
+  --> LowesManager lowesManager
+  --> Metrolina metrolina
+}
+
+// Metrolina creates order with the following flields
+transaction updateDeliveryOrder {
+  // Fields for Metrolina to enter
+  o String[] plantStringArray optional
+  o Integer[] plantQuantityArray optional
+  o String truckId optional
+  o String driverId optional
+  o String startLocation optional
+  o String destinationLocation optional
+  o DateTime estimatedArrivalDay optional
+  o String estimatedArrivalTime optional
+  o DateTime departureTime optional
+  o String distanceToDeliver optional
+  o String durationInTraffic optional
+  
+  --> LowesManager lowesManager optional
+
+  // Related Entities
+  --> DeliveryOrder deliveryOrder
+}
+
+// Lowes adds the following information to the delivery order
+transaction completeDeliveryOrder {
+  o Integer numEmployeesUnloading
+  o Integer numEmployeesShelving
+  o Integer numRacksRecieved
+   
+  o DateTime arrivalTime
+  o DateTime unloadingStartTime
+  o DateTime unloadingEndTime
+  o Integer[] plantQuantityArray
+
+  --> DeliveryOrder deliveryOrder
+}
+
+// Delete this order
+transaction deleteDeliveryOrder {
+  --> DeliveryOrder deliveryOrder
+}
+
