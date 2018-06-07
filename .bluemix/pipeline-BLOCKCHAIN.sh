@@ -132,8 +132,8 @@ function create_blockchain_network_card {
     export BLOCKCHAIN_NETWORK_ENROLL_SECRET=$(jq --raw-output 'limit(1;.certificateAuthorities[].registrar[0].enrollSecret)' blockchain-connection-profile.json)
     export BLOCKCHAIN_NETWORK_CARD=${BLOCKCHAIN_NETWORK_ENROLL_ID}@blockchain-network
     composer card list
-    # if ! composer card list -c ${BLOCKCHAIN_NETWORK_CARD} > /dev/null 2>&1
-    # then
+    if ! composer card list -c ${BLOCKCHAIN_NETWORK_CARD} > /dev/null 2>&1
+    then
         request_admin_cert
         upload_admin_cert
         PEER=$(jq --raw-output 'limit(1; .organizations[].peers[0])' blockchain-connection-profile.json)
@@ -144,7 +144,7 @@ function create_blockchain_network_card {
         composer card import -f adminCard.card -c ${BLOCKCHAIN_NETWORK_CARD}
         rm -f adminCard.card
         composer card list
-    # fi
+    fi
 }
 
 function update_blockchain_deploy_status {

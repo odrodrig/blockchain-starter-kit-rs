@@ -68,6 +68,8 @@ function deploy_composer_contract {
             elif [[ "${OUTPUT}" = *"chaincode exists"* ]]
             then
                 BUSINESS_NETWORK_UPGRADE=true
+                ls
+                composer card list
                 break
             else
                 echo failed to start composer contract ${CONTRACT}
