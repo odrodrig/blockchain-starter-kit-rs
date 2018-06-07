@@ -170,7 +170,7 @@ function deploy_composer_rest_server {
     pushd contracts/${CONTRACT}
     BUSINESS_NETWORK_NAME=$(jq --raw-output '.name' package.json)
     BUSINESS_NETWORK_CARD=admin@${BUSINESS_NETWORK_NAME}
-    CF_APP_NAME=composer-rest-server-${BUSINESS_NETWORK_NAME}
+    CF_APP_NAME=lowes-rest-server
     cf push \
         ${CF_APP_NAME} \
         --docker-image ibmblockchain/composer-rest-server:${COMPOSER_VERSION} \
@@ -245,7 +245,7 @@ function gather_composer_rest_server_url {
     echo gathering rest server url for composer contract ${CONTRACT}
     pushd contracts/${CONTRACT}
     BUSINESS_NETWORK_NAME=$(jq --raw-output '.name' package.json)
-    CF_APP_NAME=composer-rest-server-${BUSINESS_NETWORK_NAME}
+    CF_APP_NAME=lowes-rest-server
     REST_SERVER_URL=$(cf app ${CF_APP_NAME} | grep routes: | awk '{print $2}')
     export REST_SERVER_URLS=$(echo ${REST_SERVER_URLS} | jq ". + {\"${BUSINESS_NETWORK_NAME}\":\"https://${REST_SERVER_URL}\"}")
     popd
