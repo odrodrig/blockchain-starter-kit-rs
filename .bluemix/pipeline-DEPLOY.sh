@@ -43,6 +43,10 @@ function deploy_composer_contract {
     BUSINESS_NETWORK_VERSION=$(jq --raw-output '.version' package.json)
     BUSINESS_NETWORK_ARCHIVES=$(ls dist/*.bna)
     BUSINESS_NETWORK_CARD=admin@${BUSINESS_NETWORK_NAME}
+
+    echo 111111111111111111111111111111111111111111111111111
+    composer card list
+
     for BUSINESS_NETWORK_ARCHIVE in ${BUSINESS_NETWORK_ARCHIVES}
     do
         if ! OUTPUT=$(composer network install -c ${BLOCKCHAIN_NETWORK_CARD} -a ${BUSINESS_NETWORK_ARCHIVES} 2>&1)
@@ -91,6 +95,7 @@ function deploy_composer_contract {
         else
             if composer card list -c ${BUSINESS_NETWORK_CARD} > /dev/null 2>&1
             then
+                composer card list
                 composer card delete -c ${BUSINESS_NETWORK_CARD}
             fi
             composer card import -f adminCard.card -c ${BUSINESS_NETWORK_CARD}
