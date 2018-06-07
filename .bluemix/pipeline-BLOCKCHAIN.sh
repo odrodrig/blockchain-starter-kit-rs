@@ -131,6 +131,7 @@ function create_blockchain_network_card {
     export BLOCKCHAIN_NETWORK_ENROLL_ID=$(jq --raw-output 'limit(1;.certificateAuthorities[].registrar[0].enrollId)' blockchain-connection-profile.json)
     export BLOCKCHAIN_NETWORK_ENROLL_SECRET=$(jq --raw-output 'limit(1;.certificateAuthorities[].registrar[0].enrollSecret)' blockchain-connection-profile.json)
     export BLOCKCHAIN_NETWORK_CARD=${BLOCKCHAIN_NETWORK_ENROLL_ID}@blockchain-network
+    composer card list
     if ! composer card list -c ${BLOCKCHAIN_NETWORK_CARD} > /dev/null 2>&1
     then
         request_admin_cert
@@ -142,6 +143,7 @@ function create_blockchain_network_card {
         composer card create -f adminCard.card -p blockchain-connection-profile.json -u ${BLOCKCHAIN_NETWORK_ENROLL_ID} -c ./credentials/${BLOCKCHAIN_NETWORK_ENROLL_ID}-pub.pem -k ./credentials/${BLOCKCHAIN_NETWORK_ENROLL_ID}-priv.pem -r PeerAdmin -r ChannelAdmin
         composer card import -f adminCard.card -c ${BLOCKCHAIN_NETWORK_CARD}
         rm -f adminCard.card
+        composer card list
     fi
 }
 
